@@ -1,0 +1,385 @@
+
+[INFO] Membaca dataset: Data_POS-Tag-ID.tsv
+
+======================================================================================================================
+ANALISIS AWAL DATASET NLP UNTUK HMM & VITERBI
+======================================================================================================================
+
+1) Ringkasan Dataset
+----------------------------------------------------------------------------------------------------------------------
+Metrik                     | Nilai   
+---------------------------+---------
+Jumlah kalimat             | 10030   
+Jumlah token               | 256622  
+Jumlah uniq word           | 18288   
+Jumlah uniq tag            | 24      
+Rata-rata panjang kalimat  | 25.59   
+Kalimat terpendek          | 2       
+Kalimat terpanjang         | 82      
+Word singleton (freq=1)    | 8420    
+Persentase singleton       | 46.04%  
+Word ambigu (punya >1 tag) | 1079    
+
+2) Cek Struktur File dan Konsistensi Format
+----------------------------------------------------------------------------------------------------------------------
+Komponen                  | Nilai   
+--------------------------+---------
+Total line file           | 276682  
+Blank line                | 0       
+Baris token word-tag      | 256622  
+Tag pembuka <kalimat>     | 10030   
+Tag penutup </kalimat>    | 10030   
+Baris format salah        | 0       
+Nested sentence warning   | 0       
+Close tanpa open warning  | 0       
+Unclosed sentence warning | 0       
+
+3) Distribusi Huruf pada Word
+----------------------------------------------------------------------------------------------------------------------
+Kategori case word | Jumlah   | Persentase
+-------------------+----------+-----------
+lower              | 173012   | 67.42%    
+title              | 38716    | 15.09%    
+upper              | 7716     | 3.01%     
+mixed/other        | 37178    | 14.49%    
+
+4) Distribusi Huruf pada Tag
+----------------------------------------------------------------------------------------------------------------------
+Kategori case tag | Jumlah   | Persentase
+------------------+----------+-----------
+upper             | 256621   | 100.00%   
+lower             | 1        | 0.00%     
+
+   Varian Penulisan Tag yang Patut Dicek
+----------------------------------------------------------------------------------------------------------------------
+tag_normalisasi | varian_asli  
+----------------+--------------
+FW              | FW:2365, fw:1
+
+5) Kondisi Frekuensi Kata Unik pada Bentuk Asli / Lowercase / Uppercase
+----------------------------------------------------------------------------------------------------------------------
+Kondisi                         | Jumlah  
+--------------------------------+---------
+Unique word bentuk asli         | 18288   
+Unique word setelah lowercase   | 16292   
+Unique word setelah uppercase   | 16292   
+Pengurangan uniq jika lowercase | 1996    
+Pengurangan uniq jika uppercase | 1996    
+Singleton bentuk asli           | 8420    
+Singleton setelah lowercase     | 7394    
+Singleton setelah uppercase     | 7394    
+
+6) Ringkasan Kelompok Kata dengan Varian Penulisan
+----------------------------------------------------------------------------------------------------------------------
+Metrik                               | Nilai   
+-------------------------------------+---------
+Kelompok kata dengan >1 varian case  | 1972    
+Total token dalam kelompok varian    | 147895  
+case                                 |         
+Kelompok varian case + beda tag      | 817     
+Kalimat diawali token kapital/upper  | 9792    
+Kalimat diawali token non-kapital    | 238     
+Unique token kapital/upper di tengah | 5682    
+ kalimat                             |         
+
+7) Sampling Kata dengan Bentuk Dasar Sama tetapi Ditulis Berbeda
+----------------------------------------------------------------------------------------------------------------------
+bentuk_normal | freq_total | jumlah_varian | varian_penulisan      | catatan              
+--------------+------------+---------------+-----------------------+----------------------
+yang          | 5640       | 2             | yang:5617 [SC:5616,   | tag antar-varian     
+              |            |               | DT:1] | Yang:23       | berbeda; beda huruf  
+              |            |               | [SC:12, DT:10, NNP:1] | besar-kecil          
+dan           | 4657       | 2             | dan:4621 [CC:4565,    | tag antar-varian     
+              |            |               | NNP:56] | Dan:36      | berbeda; beda huruf  
+              |            |               | [CC:36]               | besar-kecil          
+di            | 4178       | 3             | di:4080 [IN:4078,     | tag antar-varian     
+              |            |               | X:2] | Di:97 [IN:97]  | berbeda; beda huruf  
+              |            |               | | DI:1 [IN:1]         | besar-kecil          
+dari          | 2413       | 2             | dari:2349 [IN:2345,   | tag antar-varian     
+              |            |               | X:2, NNP:2] | Dari:64 | berbeda; beda huruf  
+              |            |               |  [IN:64]              | besar-kecil          
+pada          | 2382       | 2             | pada:2242 [IN:2242] | | beda huruf           
+              |            |               |  Pada:140 [IN:140]    | besar-kecil          
+untuk         | 2282       | 2             | untuk:2165 [SC:1706,  | tag antar-varian     
+              |            |               | IN:440, NNP:14, X:3]  | berbeda; beda huruf  
+              |            |               | | Untuk:117 [SC:93,   | besar-kecil          
+              |            |               | IN:23, NNP:1]         |                      
+itu           | 2274       | 4             | itu:2205 [PR:2204,    | tag antar-varian     
+              |            |               | PRP:1] | Itu:67       | berbeda; beda huruf  
+              |            |               | [PR:67] | ITU:1       | besar-kecil          
+              |            |               | [PR:1] | iTU:1 [PR:1] |                      
+dengan        | 2208       | 2             | dengan:2073 [IN:1509, | tag antar-varian     
+              |            |               |  SC:560, X:3, NNP:1]  | berbeda; beda huruf  
+              |            |               | | Dengan:135 [IN:90,  | besar-kecil          
+              |            |               | SC:45]                |                      
+kata          | 2059       | 2             | kata:2057 [VB:2049,   | tag antar-varian     
+              |            |               | NN:8] | Kata:2 [VB:2] | berbeda; beda huruf  
+              |            |               |                       | besar-kecil          
+rp            | 1971       | 2             | Rp:1967 [SYM:1967] |  | beda huruf           
+              |            |               | RP:4 [SYM:4]          | besar-kecil          
+dalam         | 1865       | 2             | dalam:1675 [IN:1569,  | tag antar-varian     
+              |            |               | NN:91, JJ:7, SC:6] |  | berbeda; beda huruf  
+              |            |               | Dalam:190 [IN:170,    | besar-kecil          
+              |            |               | NNP:17, NN:3]         |                      
+akan          | 1817       | 2             | akan:1810 [MD:1809,   | tag antar-varian     
+              |            |               | IN:1] | Akan:7 [MD:7] | berbeda; beda huruf  
+              |            |               |                       | besar-kecil          
+ini           | 1546       | 2             | ini:1466 [PR:1466] |  | beda huruf           
+              |            |               | Ini:80 [PR:80]        | besar-kecil          
+as            | 1544       | 2             | AS:1533 [NNP:1533] |  | beda huruf           
+              |            |               | As:11 [NNP:11]        | besar-kecil          
+tahun         | 1250       | 2             | tahun:1201 [NN:1193,  | beda huruf           
+              |            |               | NNP:8] | Tahun:49     | besar-kecil          
+              |            |               | [NN:42, NNP:7]        |                      
+
+8) Sampling Prioritas: Varian Penulisan yang Juga Berbeda Distribusi Tag
+----------------------------------------------------------------------------------------------------------------------
+bentuk_normal | freq_total | jumlah_varian | varian_penulisan      | catatan              
+--------------+------------+---------------+-----------------------+----------------------
+yang          | 5640       | 2             | yang:5617 [SC:5616,   | tag antar-varian     
+              |            |               | DT:1] | Yang:23       | berbeda; beda huruf  
+              |            |               | [SC:12, DT:10, NNP:1] | besar-kecil          
+dan           | 4657       | 2             | dan:4621 [CC:4565,    | tag antar-varian     
+              |            |               | NNP:56] | Dan:36      | berbeda; beda huruf  
+              |            |               | [CC:36]               | besar-kecil          
+di            | 4178       | 3             | di:4080 [IN:4078,     | tag antar-varian     
+              |            |               | X:2] | Di:97 [IN:97]  | berbeda; beda huruf  
+              |            |               | | DI:1 [IN:1]         | besar-kecil          
+dari          | 2413       | 2             | dari:2349 [IN:2345,   | tag antar-varian     
+              |            |               | X:2, NNP:2] | Dari:64 | berbeda; beda huruf  
+              |            |               |  [IN:64]              | besar-kecil          
+untuk         | 2282       | 2             | untuk:2165 [SC:1706,  | tag antar-varian     
+              |            |               | IN:440, NNP:14, X:3]  | berbeda; beda huruf  
+              |            |               | | Untuk:117 [SC:93,   | besar-kecil          
+              |            |               | IN:23, NNP:1]         |                      
+itu           | 2274       | 4             | itu:2205 [PR:2204,    | tag antar-varian     
+              |            |               | PRP:1] | Itu:67       | berbeda; beda huruf  
+              |            |               | [PR:67] | ITU:1       | besar-kecil          
+              |            |               | [PR:1] | iTU:1 [PR:1] |                      
+dengan        | 2208       | 2             | dengan:2073 [IN:1509, | tag antar-varian     
+              |            |               |  SC:560, X:3, NNP:1]  | berbeda; beda huruf  
+              |            |               | | Dengan:135 [IN:90,  | besar-kecil          
+              |            |               | SC:45]                |                      
+kata          | 2059       | 2             | kata:2057 [VB:2049,   | tag antar-varian     
+              |            |               | NN:8] | Kata:2 [VB:2] | berbeda; beda huruf  
+              |            |               |                       | besar-kecil          
+dalam         | 1865       | 2             | dalam:1675 [IN:1569,  | tag antar-varian     
+              |            |               | NN:91, JJ:7, SC:6] |  | berbeda; beda huruf  
+              |            |               | Dalam:190 [IN:170,    | besar-kecil          
+              |            |               | NNP:17, NN:3]         |                      
+akan          | 1817       | 2             | akan:1810 [MD:1809,   | tag antar-varian     
+              |            |               | IN:1] | Akan:7 [MD:7] | berbeda; beda huruf  
+              |            |               |                       | besar-kecil          
+bank          | 980        | 2             | Bank:734 [NNP:706,    | tag antar-varian     
+              |            |               | NN:28] | bank:246     | berbeda; beda huruf  
+              |            |               | [NN:238, NNP:4, FW:4] | besar-kecil          
+atau          | 715        | 2             | atau:713 [CC:712,     | tag antar-varian     
+              |            |               | NNP:1] | Atau:2       | berbeda; beda huruf  
+              |            |               | [CC:2]                | besar-kecil          
+per           | 704        | 3             | per:687 [IN:686,      | tag antar-varian     
+              |            |               | NND:1] | Per:16       | berbeda; beda huruf  
+              |            |               | [IN:15, FW:1] | PER:1 | besar-kecil          
+              |            |               |  [NNP:1]              |                      
+negara        | 699        | 2             | negara:583 [NN:579,   | tag antar-varian     
+              |            |               | NNP:3, X:1] |         | berbeda; beda huruf  
+              |            |               | Negara:116 [NNP:77,   | besar-kecil          
+              |            |               | NN:39]                |                      
+ke            | 676        | 2             | ke:674 [IN:672, OD:2] | tag antar-varian     
+              |            |               |  | Ke:2 [IN:2]        | berbeda; beda huruf  
+              |            |               |                       | besar-kecil          
+
+9) Token Khusus yang Penting untuk Preprocessing
+----------------------------------------------------------------------------------------------------------------------
+Jenis token khusus          | Jumlah uniq word | Contoh                              
+----------------------------+------------------+-------------------------------------
+Mengandung digit            | 2829             | 10, 28, 5.000, 30, 2010             
+Hanya tanda baca            | 19               | ., ,, ", :, '                       
+Mengandung tanda hubung (-) | 614              | monyet-monyet, kantor-kantor,       
+                            |                  | bertahun-tahun, nama-nama, -nya     
+Mengandung spasi internal   | 845              | pesta olahraga, Pesta Olahraga,     
+                            |                  | negara bagian, sebagian besar,      
+                            |                  | kantor berita                       
+Spasi awal atau akhir       | 0                | -                                   
+Double space                | 0                | -                                   
+
+10) Contoh Token Kapital/Upper di Tengah Kalimat
+----------------------------------------------------------------------------------------------------------------------
+Token kapital/upper di tengah        | Frekuensi
+kalimat                              |          
+-------------------------------------+----------
+Rp                                   | 1967     
+AS                                   | 1527     
+Indonesia                            | 1033     
+Jakarta                              | 669      
+Bank                                 | 635      
+PT                                   | 598      
+BI                                   | 542      
+Irak                                 | 295      
+Tbk                                  | 293      
+Senin                                | 291      
+Selasa                               | 268      
+Presiden                             | 235      
+Rabu                                 | 233      
+Kamis                                | 214      
+Menteri                              | 203      
+
+11) Top 15 Tag Paling Sering
+----------------------------------------------------------------------------------------------------------------------
+Tag      | Frekuensi | Persentase
+---------+-----------+-----------
+NN       | 61940     | 24.14%    
+NNP      | 34649     | 13.50%    
+VB       | 31733     | 12.37%    
+Z        | 26347     | 10.27%    
+IN       | 21311     | 8.30%     
+CD       | 17819     | 6.94%     
+SC       | 13080     | 5.10%     
+JJ       | 9724      | 3.79%     
+PRP      | 7583      | 2.95%     
+CC       | 7438      | 2.90%     
+PR       | 5348      | 2.08%     
+MD       | 5248      | 2.05%     
+RB       | 4903      | 1.91%     
+FW       | 2365      | 0.92%     
+SYM      | 2210      | 0.86%     
+
+12) Top 15 Word Paling Sering
+----------------------------------------------------------------------------------------------------------------------
+Word     | Frekuensi
+---------+----------
+,        | 14473    
+.        | 9967     
+yang     | 5617     
+-nya     | 4649     
+dan      | 4621     
+di       | 4080     
+dari     | 2349     
+persen   | 2281     
+pada     | 2242     
+itu      | 2205     
+untuk    | 2165     
+dengan   | 2073     
+kata     | 2057     
+Rp       | 1967     
+akan     | 1810     
+
+13) Top 15 Tag Awal Kalimat
+----------------------------------------------------------------------------------------------------------------------
+Tag awal kalimat | Frekuensi | Persentase
+-----------------+-----------+-----------
+NN               | 3218      | 32.08%    
+NNP              | 1741      | 17.36%    
+IN               | 1315      | 13.11%    
+SC               | 822       | 8.20%     
+PRP              | 800       | 7.98%     
+CC               | 575       | 5.73%     
+CD               | 420       | 4.19%     
+VB               | 354       | 3.53%     
+RB               | 159       | 1.59%     
+PR               | 157       | 1.57%     
+NND              | 112       | 1.12%     
+DT               | 88        | 0.88%     
+JJ               | 69        | 0.69%     
+NEG              | 56        | 0.56%     
+MD               | 36        | 0.36%     
+
+14) Top 15 Tag Akhir Kalimat
+----------------------------------------------------------------------------------------------------------------------
+Tag akhir kalimat | Frekuensi | Persentase
+------------------+-----------+-----------
+Z                 | 9818      | 97.89%    
+NN                | 54        | 0.54%     
+NNP               | 43        | 0.43%     
+CD                | 29        | 0.29%     
+JJ                | 23        | 0.23%     
+PRP               | 21        | 0.21%     
+VB                | 18        | 0.18%     
+CC                | 9         | 0.09%     
+PR                | 4         | 0.04%     
+FW                | 3         | 0.03%     
+SC                | 2         | 0.02%     
+SYM               | 2         | 0.02%     
+NND               | 2         | 0.02%     
+IN                | 1         | 0.01%     
+RB                | 1         | 0.01%     
+
+15) Top 15 Word Ambigu (Satu Word, Banyak Tag)
+----------------------------------------------------------------------------------------------------------------------
+word      | jumlah_tag | total_freq | distribusi_tag                      
+----------+------------+------------+-------------------------------------
+untuk     | 6          | 2165       | SC:1706, IN:440, NNP:14, X:3, NN:1, 
+          |            |            | VB:1                                
+dalam     | 5          | 1675       | IN:1569, NN:91, JJ:7, SC:6, X:2     
+sementara | 5          | 141        | SC:130, CC:6, RB:3, X:1, NNP:1      
+dengan    | 4          | 2073       | IN:1509, SC:560, X:3, NNP:1         
+-         | 4          | 749        | Z:611, NNP:135, FW:2, X:1           
+sedang    | 4          | 153        | MD:147, JJ:2, CC:2, SC:2            
+guna      | 4          | 114        | SC:106, IN:4, NN:3, MD:1            
+sedikit   | 4          | 71         | CD:46, MD:19, RB:3, JJ:3            
+dari      | 3          | 2349       | IN:2345, X:2, NNP:2                 
+2007      | 3          | 821        | CD:808, NNP:12, NND:1               
+negara    | 3          | 583        | NN:579, NNP:3, X:1                  
+saat      | 3          | 431        | NN:424, SC:6, IN:1                  
+sekitar   | 3          | 428        | IN:385, RB:38, NN:5                 
+lalu      | 3          | 391        | CC:388, JJ:2, NN:1                  
+besar     | 3          | 370        | JJ:360, NNP:9, NN:1                 
+
+16) Rekomendasi Awal Tahap Preprocessing
+----------------------------------------------------------------------------------------------------------------------
+No       | Rekomendasi preprocessing awal      
+---------+-------------------------------------
+1        | Normalisasi tag ke satu bentuk baku,
+         |  misalnya UPPERCASE, karena ada     
+         | varian tag yang hanya berbeda huruf 
+         | besar-kecil seperti FW dan fw. Ini  
+         | penting agar probabilitas emisi dan 
+         | transisi tidak terpecah ke tag yang 
+         | sebenarnya sama.                    
+2        | Jangan melakukan split spasi ulang  
+         | pada kolom word, karena dataset     
+         | mengandung token multi-kata dalam   
+         | satu baris. Token seperti ini harus 
+         | dipertahankan apa adanya sesuai     
+         | anotasi dataset.                    
+3        | Jangan langsung menerapkan lowercase
+         |  ke semua word. Ada kelompok kata   
+         | yang bentuk lowercase-nya sama      
+         | tetapi distribusi tag               
+         | antar-variannya berbeda, sehingga   
+         | lowercasing berisiko menggabungkan  
+         | makna atau fungsi yang berbeda.     
+4        | Informasi kapitalisasi tampak cukup 
+         | bermakna dalam kalimat, terutama    
+         | untuk posisi awal kalimat dan nama  
+         | diri di tengah kalimat. Alternatif  
+         | yang lebih aman daripada full       
+         | lowercasing adalah menambah fitur   
+         | bentuk kata, misalnya is_lower,     
+         | is_upper, is_title, atau            
+         | suffix/prefix.                      
+5        | Siapkan strategi unknown word atau  
+         | OOV untuk Viterbi, misalnya         
+         | smoothing emisi, token <UNK>, atau  
+         | aturan berbasis bentuk kata.        
+         | Banyaknya singleton word menunjukkan
+         |  kemungkinan besar test set         
+         | mengandung kata baru.               
+6        | Pertimbangkan normalisasi selektif  
+         | untuk token khusus seperti angka,   
+         | tanda baca, atau kata bertanda      
+         | hubung. Namun lakukan hati-hati dan 
+         | jangan menghapusnya otomatis jika   
+         | tag-nya memang informatif bagi model
+         |  POS Tagging.                       
+7        | Sebelum preprocessing final, pilih  
+         | beberapa sampel kelompok kata yang  
+         | memiliki bentuk dasar sama tetapi   
+         | varian penulisannya berbeda, lalu   
+         | cek secara manual apakah            
+         | perbedaannya hanya posisi kalimat,  
+         | nama diri, singkatan, atau memang   
+         | beda makna. Bagian sampling pada    
+         | output ini disediakan khusus untuk  
+         | itu.                                
+
+[SELESAI] Analisis dataset selesai.
